@@ -12,9 +12,11 @@ async function performScraping() {
         }
     })
     const $ = cheerio.load(axiosResponse.data)
-    $(".cross_world_markets").find("div").each((index, element) => {
-        console.log($(element).text())
+    var mb = $(".cross_world_markets").find("div").each((index, element) => {
+
     });
+    var cheapest = $(".cheapest").find("div").first().text()
+    console.log($(".cheapest").find("div").first().text())
 }
 
 performScraping()
