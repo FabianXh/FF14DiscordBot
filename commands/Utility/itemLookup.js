@@ -1,16 +1,18 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
+const performScraping = require("../../Universalis/Universalis");
 
 module.exports = {
   data: new SlashCommandBuilder()
-    .setName("gaming")
-    .setDescription("Makes Tygan do the thing")
+    .setName("item-lookup")
+    .setDescription("Looks up an item on the market board")
     .addStringOption((option) =>
       option
-        .setName("input")
-        .setDescription("The input to echo back")
+        .setName("name")
+        .setDescription("Input the item name")
         .setRequired(true)
     ),
   async execute(interaction) {
-    await interaction.reply(`<se.6> WENZ PULL ${option}`);
+    const input = interaction.options.getString("name");
+    await interaction.reply(`<se.6> WENZ PULL ` + performScraping(input));
   },
 };

@@ -25,14 +25,10 @@ async function performScraping(itemName) {
 
     const $ = cheerio.load(axiosResponse.data);
     const cheapest = $(".cheapest").find("div").first().text();
-    console.log("Cheapest offer:", cheapest);
+    return "Cheapest offer: " + cheapest;
   } catch (error) {
     console.error("Error fetching data:", error);
   }
 }
-
-// // Example usage: node yourScript.js "Stygian Hyposkhesphyra"
-// const itemName = process.argv[2];
-// performScraping(itemName);
 
 module.exports = performScraping;
