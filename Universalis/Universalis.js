@@ -21,7 +21,9 @@ async function performScraping(itemName) {
         `https://universalis.app/api/v2/light/39630?listings=5`
     );
     const chaosData = chaosResponse.data;
-    console.log(chaosData.listings[0].pricePerUnit);
+    for (let lightListing of lightData.listings) {
+        console.log(lightListing.worldName, listing.pricePerUnit);
+    }
 }
 // can delete when we load this into the bot
 performScraping("Diadochos Sword");
