@@ -8,18 +8,20 @@ async function performScraping() {
         method: "GET",
         url: "https://universalis.app/market/39630",
         headers: {
-    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36"
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36"
         }
     })
+    // using cheetio to format the web page into HTML
     const $ = cheerio.load(axiosResponse.data)
-    var mb = $(".cross_world_markets").find("div").each((index, element) => {
 
-    });
+    // keeping this veriable for later
     var cheapest = $(".cheapest").find("div").first().text()
+    // delete whenever you want this was for testing
     console.log($(".cheapest").find("div").first().text())
+    return cheapest
 }
-
-performScraping()
+// can delete when we load this into the bot
+var cheapest = performScraping()
 
 
 
