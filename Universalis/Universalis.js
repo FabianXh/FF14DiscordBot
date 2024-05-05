@@ -25,7 +25,7 @@ async function performScraping(itemName) {
 
     const $ = cheerio.load(axiosResponse.data);
     const cheapest = $(".cheapest").find("div").first().text();
-    return "Cheapest offer: " + cheapest;
+    console.log("Cheapest offer:", cheapest);
   } catch (error) {
     console.error("Error fetching data:", error);
   }
