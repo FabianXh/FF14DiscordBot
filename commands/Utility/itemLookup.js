@@ -14,7 +14,7 @@ module.exports = {
     async execute(interaction) {
         const input = interaction.options.getString('name');
         await interaction.reply(
-            `<se.6> WENZ PULL ` + (await performScraping(input)),
+            `<se.6> WENZ PULL \n ` + (await performScraping(input)),
             console.log(await performScraping(input))
         );
     },
