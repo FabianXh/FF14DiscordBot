@@ -1,3 +1,4 @@
+const { EmbedBuilder } = require('discord.js');
 const axios = require('axios');
 const items = require('./items.json');
 const { get } = require('axios');
@@ -22,7 +23,28 @@ async function performScraping(itemName) {
         `https://universalis.app/api/v2/chaos/${itemId}?listings=5`
     );
     const chaosData = chaosResponse.data;
-
+    const embededmassage = new EmbedBuilder()
+        .setTitle(itemName + ' Market Data')
+        .setURL(`https://universalis.app/market/${itemId}`)
+        .setDescription('prices of ' + itemName + ' on the market board')
+        .addFields({
+            name: 'Light Data',
+            value:
+                lightData.listings[0].worldName +
+                lightData.listings[0].pricePerUnit +
+                '\n' +
+                lightData.listings[1].worldName +
+                lightData.listings[1].pricePerUnit +
+                '\n' +
+                lightData.listings[2].worldName +
+                lightData.listings[2].pricePerUnit +
+                '\n' +
+                lightData.listings[3].worldName +
+                lightData.listings[3].pricePerUnit +
+                '\n' +
+                lightData.listings[4].worldName +
+                lightData.listings[4].pricePerUnit,
+        });
     // return the data
     var data = 'Light Data | Chaos Data';
     for (let i = 0; i < lightData.listings.length; i++) {
