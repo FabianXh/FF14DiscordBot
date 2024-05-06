@@ -23,51 +23,44 @@ async function performScraping(itemName) {
         `https://universalis.app/api/v2/chaos/${itemId}?listings=5`
     );
     const chaosData = chaosResponse.data;
-    const embededmassage = new EmbedBuilder()
+    var lightPrintData = '';
+    for (let i = 0; i < lightData.listings.length; i++) {
+        lightPrintData += `${lightData.listings[i].worldName}: ${lightData.listings[i].pricePerUnit}<:Gil_Icon:1237123134260379758>x${lightData.listings[i].quantity}\n`;
+        {
+            lightData.listings[i].hq
+                ? (lightPrintData += 'HQ\n')
+                : (lightPrintData += '\n');
+        }
+    }
+    var chaosPrintData = '';
+    for (let i = 0; i < chaosData.listings.length; i++) {
+        chaosPrintData += `${chaosData.listings[i].worldName}: ${chaosData.listings[i].pricePerUnit}<:Gil_Icon:1237123134260379758>x${chaosData.listings[i].quantity}\n`;
+        {
+            lightData.listings[i].hq
+                ? (chaosPrintData += 'HQ\n')
+                : (chaosPrintData += '\n');
+        }
+    }
+    const embededMassage = new EmbedBuilder()
+        .setColor('89CFF0')
         .setTitle(itemName + ' Market Data')
         .setURL(`https://universalis.app/market/${itemId}`)
-        .setDescription('prices of ' + itemName + ' on the market board')
-        .addFields({
-            name: 'Light Data',
-            value:
-                lightData.listings[0].worldName +
-                lightData.listings[0].pricePerUnit +
-                '\n' +
-                lightData.listings[1].worldName +
-                lightData.listings[1].pricePerUnit +
-                '\n' +
-                lightData.listings[2].worldName +
-                lightData.listings[2].pricePerUnit +
-                '\n' +
-                lightData.listings[3].worldName +
-                lightData.listings[3].pricePerUnit +
-                '\n' +
-                lightData.listings[4].worldName +
-                lightData.listings[4].pricePerUnit,
-        });
-    // return the data
-    var data = 'Light Data | Chaos Data';
-    for (let i = 0; i < lightData.listings.length; i++) {
-        data +=
-            '\n |' +
-            lightData.listings[i].worldName +
-            lightData.listings[i].pricePerUnit +
-            '|' +
-            chaosData.listings[i].worldName +
-            chaosData.listings[i].pricePerUnit +
-            '|';
-    }
-    // Compare the prices to find cheapest
-    if (
-        lightData.listings[1].pricePerUnit > chaosData.listings[1].pricePerUnit
-    ) {
-        data += '\n Chaos is cheaper: ' + chaosData.listings[1].pricePerUnit;
-    } else {
-        data += '\n Light is cheaper: ' + lightData.listings[1].pricePerUnit;
-    }
+        .setDescription('Prices of ' + itemName + ' on the market board')
+        .addFields(
+            {
+                name: 'Light Data',
+                value: lightPrintData,
+                inline: true,
+            },
+            {
+                name: 'Chaos Data',
+                value: chaosPrintData,
+                inline: true,
+            }
+        );
 
     // return the data
-    return data;
+    return embededMassage;
 }
 // can delete when we load this into the bot
 
