@@ -1,12 +1,16 @@
-const { SlashCommandBuilder, EmbedBuilder } = require('@discordjs/builders');
+const { SlashCommandBuilder, MessageEmbed } = require('@discordjs/builders');
 
-function getRandomInt(max) {
-    return Math.floor(Math.random() * Math.floor(max));
-}
+const getRandomInt = (max) => Math.floor(Math.random() * max);
+
+const createEmbedMessage = (input, roll) =>
+    new MessageEmbed()
+        .setTitle('DEATH ROLL!')
+        .setDescription(`Roll a number between 1 and ${input}`)
+        .addFields({ name: 'ROLL', value: roll.toString() });
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName('death_roll') // Changed to meet Discord's requirements
+        .setName('death_roll')
         .setDescription('DEATH ROLL!')
         .addIntegerOption((option) =>
             option
@@ -16,14 +20,9 @@ module.exports = {
         ),
     async execute(interaction) {
         await interaction.deferReply();
-        let input = interaction.options.getInteger('number');
-        const embededMessageDR = new EmbedBuilder()
-            .setTitle('DEATH ROLL!')
-            .setDescription('Roll a number between 1 and the number you input')
-            .addFields({
-                name: 'ROLL',
-                value: getRandomInt(input).toString(),
-            });
+        const input = interaction.options.getInteger('number');
+        const roll = getRandomInt(input);
+        const embededMessageDR = createEmbedMessage(input, roll);
         await interaction.editReply({ embeds: [embededMessageDR] });
     },
 };
