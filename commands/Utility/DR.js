@@ -40,7 +40,7 @@ module.exports = {
 
   async execute(interaction) {
     await interaction.deferReply();
-    const target = interaction?.options?.getUser("target");
+    // const target = interaction?.options?.getUser("target");
     const input = interaction.options.getInteger("number");
     let roll = getRandomInt(input);
     client.on("interactionCreate", (interaction) => {
@@ -52,14 +52,14 @@ module.exports = {
       roll = getRandomInt(oldMax);
 
       interaction.reply({
-        content: `${target}`,
+        // content: `${target}`, Fuck you tygan
         embeds: [createEmbedMessage(oldMax, roll)],
         components: [row],
       });
     });
 
     await interaction.editReply({
-      content: `${target}`,
+      //   content: `${target}`,
       embeds: [createEmbedMessage(input, roll)],
       components: [row],
     });
