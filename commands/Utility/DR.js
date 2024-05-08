@@ -20,13 +20,25 @@ row.addComponents(
         .setStyle(ButtonStyle.Danger)
 );
 
-const createEmbedMessage = (input, roll) =>
+const createEmbedMessage = (input, roll, target) =>
     new EmbedBuilder()
         .setColor('DC143C')
         .setTitle('DEATH ROLL!')
         .setDescription(`Rolling a number between 1 and ${input}...`)
+        .setAuthor({
+            name: target.displayName || target.username,
+            iconURL: target.displayAvatarURL(),
+        })
         .addFields({ name: 'RESULT', value: roll.toString() });
-
+const endOfGame = (input, roll, target) =>
+    new EmbedBuilder()
+        .setColor('DC143C')
+        .setTitle('DEATH ROLL!')
+        .setDescription(`You Lost!`)
+        .setAuthor({
+            name: target.displayName || target.username,
+            iconURL: target.displayAvatarURL(),
+        });
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('death_roll')
@@ -40,7 +52,6 @@ module.exports = {
 
     async execute(interaction) {
         await interaction.deferReply();
-        // const target = interaction?.options?.getUser("target");
         const input = interaction.options.getInteger('number');
         let roll = getRandomInt(input);
         client.on('interactionCreate', (interaction) => {
@@ -52,18 +63,23 @@ module.exports = {
             }
 
             let oldMax = roll;
-            roll = getRandomInt(oldMax);
 
+            roll = getRandomInt(oldMax);
+            if (roll === 1) {
+                interaction.reply({
+                    embeds: [endOfGame(input, roll, interaction.user)],
+                    components: [],
+                });
+                return;
+            }
             interaction.reply({
-                // content: `${target}`, Fuck you tygan
-                embeds: [createEmbedMessage(oldMax, roll)],
+                embeds: [createEmbedMessage(oldMax, roll, interaction.user)],
                 components: [row],
             });
         });
 
         await interaction.editReply({
-            //   content: `${target}`,
-            embeds: [createEmbedMessage(input, roll)],
+            embeds: [createEmbedMessage(input, roll, interaction.user)],
             components: [row],
         });
     },
