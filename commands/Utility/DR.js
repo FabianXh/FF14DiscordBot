@@ -52,6 +52,7 @@ module.exports = {
 
     async execute(interaction) {
         await interaction.deferReply();
+        console.log(interaction);
         const input = interaction.options.getInteger('number');
         let roll = getRandomInt(input);
         client.on('interactionCreate', (interaction) => {
@@ -66,7 +67,8 @@ module.exports = {
 
             roll = getRandomInt(oldMax);
             if (roll === 1) {
-                interaction.reply({
+                interaction.deferReply();
+                interaction.editReply({
                     embeds: [endOfGame(input, roll, interaction.user)],
                     components: [],
                 });
