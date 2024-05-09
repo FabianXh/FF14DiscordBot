@@ -59,7 +59,7 @@ module.exports = {
         const input = interaction.options.getInteger('number');
         let roll = getRandomInt(input);
 
-        client.on('interactionCreate', (interaction) => {
+        await client.on('interactionCreate', (interaction) => {
             if (
                 !interaction.isButton() ||
                 interaction.customId !== 'rollMore'
@@ -71,9 +71,8 @@ module.exports = {
             roll = getRandomInt(oldMax);
 
             if (roll === 1) {
-                interaction.deferReply();
-                interaction.editReply({
-                    embeds: [endOfGame(input, roll, interaction.user)],
+                interaction.reply({
+                    embeds: [endOfGame(interaction.user)],
                     components: [],
                 });
                 return;
