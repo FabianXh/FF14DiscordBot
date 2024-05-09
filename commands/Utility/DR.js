@@ -8,9 +8,8 @@ const {
     ButtonBuilder,
 } = require('discord.js');
 const { token } = require('../../config.json');
-const { message } = require('../../index');
 
-//const client = new Client({ intents: [GatewayIntentBits.Guilds] });
+const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 const row = new ActionRowBuilder();
 const getRandomInt = (max) => Math.floor(Math.random() * max) + 1;
 
@@ -55,31 +54,35 @@ module.exports = {
         await interaction.deferReply();
         const input = interaction.options.getInteger('number');
         let roll = getRandomInt(input);
-        //        client.on('interactionCreate', (interaction) => {
-        if (!interaction.isButton() || interaction.customId !== 'rollMore') {
-            let message = interaction;
-            await interaction.editReply({
-                embeds: [createEmbedMessage(input, roll, interaction.user)],
+        client.on('interactionCreate', (interaction) => {
+            if (
+                !interaction.isButton() ||
+                interaction.customId !== 'rollMore'
+            ) {
+                return;
+            }
+
+            let oldMax = roll;
+
+            roll = getRandomInt(oldMax);
+            if (roll === 1) {
+                interaction.reply({
+                    embeds: [endOfGame(input, roll, interaction.user)],
+                    components: [],
+                });
+                return;
+            }
+            interaction.reply({
+                embeds: [createEmbedMessage(oldMax, roll, interaction.user)],
                 components: [row],
             });
-        }
+        });
 
-        let oldMax = roll;
-
-        roll = getRandomInt(oldMax);
-        if (roll === 1) {
-            interaction.followUp({
-                embeds: [endOfGame(input, roll, interaction.user)],
-                components: [],
-            });
-            return;
-        }
-        message.followUp({
-            embeds: [createEmbedMessage(oldMax, roll, interaction.user)],
+        await interaction.editReply({
+            embeds: [createEmbedMessage(input, roll, interaction.user)],
             components: [row],
         });
-        // });
     },
 };
 
-//client.login(token);
+client.login(token);
