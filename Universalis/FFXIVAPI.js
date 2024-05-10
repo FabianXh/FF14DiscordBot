@@ -8,13 +8,14 @@ async function getItemId(itemName) {
     const itemId = searchData.Results[0].ID;
     const itemData = await axios.get(`https://xivapi.com/item/${itemId}`);
     const links = itemData.data.GameContentLinks;
+    console.log(links);
 
     // Iterate over the keys in the GameContentLinks object
     for (const key in links) {
-        console.log(`${key}:`);
+        //        console.log(`${key}:`);
         // Iterate over the keys in the nested object
         for (const subKey in links[key]) {
-            console.log(`  ${subKey}: ${links[key][subKey]}`);
+            //            console.log(`  ${subKey}: ${links[key][subKey]}`);
             if (key === 'Quest') {
                 const questId = links[key][subKey];
                 const questData = await axios.get(
@@ -23,29 +24,10 @@ async function getItemId(itemName) {
                 console.log(`    Location: ${questData.data.PlaceName}`);
             }
             if (key === 'GilShopItem') {
-                const gilShopItemId = links[key][subKey];
-                const gilShopItemData = await axios.get(
-                    `https://xivapi.com/GilShopItem/${gilShopItemId}`
+                const CopioltIsAnIdiot = await axios.get(
+                    'https://xivapi.com/GilShopItem/262177.8'
                 );
-                if (
-                    gilShopItemData.data.Item &&
-                    gilShopItemData.data.Item.GilShop
-                ) {
-                    const gilShopId = gilShopItemData.data.Item.GilShop.ID;
-                    const gilShopData = await axios.get(
-                        `https://xivapi.com/GilShop/${gilShopId}`
-                    );
-                    if (gilShopData.data.ENpcResident) {
-                        const npcId = gilShopData.data.ENpcResident.ID;
-                        const npcData = await axios.get(
-                            `https://xivapi.com/ENpcResident/${npcId}`
-                        );
-                        console.log(`    Gil Shop: ${gilShopData.data.Name}`);
-                        console.log(
-                            `    Location: ${npcData.data.PlaceName.Name}`
-                        );
-                    }
-                }
+                console.log(CopioltIsAnIdiot.data.GilShop.ID);
             }
         }
     }
