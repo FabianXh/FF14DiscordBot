@@ -11,6 +11,7 @@ const { token } = require('../../config.json');
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 const row = new ActionRowBuilder();
+
 const getRandomInt = (max) => Math.floor(Math.random() * max) + 1;
 
 row.addComponents(
@@ -30,7 +31,8 @@ const createEmbedMessage = (input, roll, target) =>
             iconURL: target.displayAvatarURL(),
         })
         .addFields({ name: 'RESULT', value: roll.toString() });
-const endOfGame = (input, roll, target) =>
+
+const endOfGame = (target) =>
     new EmbedBuilder()
         .setColor('DC143C')
         .setTitle('DEATH ROLL!')
@@ -39,6 +41,7 @@ const endOfGame = (input, roll, target) =>
             name: target.displayName || target.username,
             iconURL: target.displayAvatarURL(),
         });
+
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('death_roll')
@@ -55,7 +58,8 @@ module.exports = {
         console.log(interaction);
         const input = interaction.options.getInteger('number');
         let roll = getRandomInt(input);
-        client.on('interactionCreate', (interaction) => {
+
+        await client.on('interactionCreate', (interaction) => {
             if (
                 !interaction.isButton() ||
                 interaction.customId !== 'rollMore'
@@ -64,16 +68,16 @@ module.exports = {
             }
 
             let oldMax = roll;
-
             roll = getRandomInt(oldMax);
+
             if (roll === 1) {
-                interaction.deferReply();
-                interaction.editReply({
-                    embeds: [endOfGame(input, roll, interaction.user)],
+                interaction.reply({
+                    embeds: [endOfGame(interaction.user)],
                     components: [],
                 });
                 return;
             }
+
             interaction.reply({
                 embeds: [createEmbedMessage(oldMax, roll, interaction.user)],
                 components: [row],
