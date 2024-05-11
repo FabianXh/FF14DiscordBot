@@ -27,10 +27,10 @@ async function getItemId(itemName) {
                 const CopioltIsAnIdiot = await axios.get(
                     'https://xivapi.com/GilShopItem/262177.8'
                 );
-                console.log(CopioltIsAnIdiot.data.GilShop.ID);
+                console.log(CopioltIsAnIdiot.data.GameContentLinks);
             }
         }
     }
 }
 
-getItemId('Cotton Yarn'); // Get ID for item with name 'Cotton Yarn'
+getItemId('tsai tou vounou'); // i think this won't work might need to look into lumina but that looks we will have the parse the data through a c script... might be fun
