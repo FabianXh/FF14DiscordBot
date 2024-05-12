@@ -66,6 +66,44 @@ async function performScraping(itemName) {
     // Return the embedded message
     return embeddedMessage;
 }
-
+async function specificWorld(itemName, worldName) {
+    const itemId = Object.keys(items).find(
+        (key) => items[key]['en'] === itemName
+    );
+    if (!itemId) {
+        console.log('Item not found.');
+        return;
+    }
+    const [worldResponse] = await Promise.all([
+        axios.get(
+            `https://universalis.app/api/v2/${worldName}/${itemId}?listings=5`
+        ),
+    ]);
+    const worldData = worldResponse?.data;
+    const worldPrintData = worldData.listings
+        .map((listing) => {
+            const hq = listing.hq ? 'HQ' : '';
+            return `**${listing.worldName}**: ${listing.pricePerUnit}<:Gil_Icon:1237123134260379758>x${listing.quantity} ${hq}\n`;
+        })
+        .join('');
+    const embeddedMessage = new EmbedBuilder()
+        .setColor('89CFF0')
+        .setTitle(itemName + ' Market Data')
+        .setURL(`https://universalis.app/market/${itemId}`)
+        .setDescription('Prices of ' + itemName + ' on the market board')
+        .addFields({
+            name: `__${worldName} Data__`,
+            value: worldPrintData,
+            inline: true,
+        })
+        .setTimestamp()
+        .setFooter({
+            text: 'Sponsored by Full Set Andy',
+            iconURL:
+                'https://cdn.discordapp.com/attachments/1236243830886371330/1237138036777553940/204558a44722029ecc0dec40ec79c74e.jpeg?ex=663a8e14&is=66393c94&hm=09b0b70257cadc297a94980c98cd22e620f54a086a6f7b8584913e04895c68ae&',
+        });
+    return embeddedMessage;
+}
 // Export the performScraping function
 exports.performScraping = performScraping;
+exports.specificWorld = specificWorld;
