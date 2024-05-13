@@ -3,7 +3,7 @@ const axios = require('axios');
 const items = require('./items.json');
 
 // Function to perform scraping
-async function performScraping(itemName) {
+async function performScraping(itemName, HQ = false) {
     console.log(itemName);
     const itemId = Object.keys(items).find(
         (key) => items[key]['en'] === itemName
@@ -13,10 +13,25 @@ async function performScraping(itemName) {
         return;
     }
     // Get the data from Universalis
-    const [lightResponse, chaosResponse] = await Promise.all([
-        axios.get(`https://universalis.app/api/v2/light/${itemId}?listings=5`),
-        axios.get(`https://universalis.app/api/v2/chaos/${itemId}?listings=5`),
-    ]);
+    if (HQ == false) {
+        const [lightResponse, chaosResponse] = await Promise.all([
+            axios.get(
+                `https://universalis.app/api/v2/light/${itemId}?listings=5`
+            ),
+            axios.get(
+                `https://universalis.app/api/v2/chaos/${itemId}?listings=5`
+            ),
+        ]);
+    } else {
+        const [lightResponse, chaosResponse] = await Promise.all([
+            axios.get(
+                `https://universalis.app/api/v2/light/${itemId}?listings=5&hq=true`
+            ),
+            axios.get(
+                `https://universalis.app/api/v2/chaos/${itemId}?listings=5&hq=true`
+            ),
+        ]);
+    }
     const lightData = lightResponse?.data;
     const chaosData = chaosResponse?.data;
 
@@ -65,7 +80,7 @@ async function performScraping(itemName) {
     // Return the embedded message
     return embeddedMessage;
 }
-async function specificWorld(itemName, worldName) {
+async function specificWorld(itemName, worldName, HQ = false) {
     const itemId = Object.keys(items).find(
         (key) => items[key]['en'] === itemName
     );
@@ -73,11 +88,19 @@ async function specificWorld(itemName, worldName) {
         console.log('Item not found.');
         return;
     }
-    const [worldResponse] = await Promise.all([
-        axios.get(
-            `https://universalis.app/api/v2/${worldName}/${itemId}?listings=5`
-        ),
-    ]);
+    if (HQ == false) {
+        const [worldResponse] = await Promise.all([
+            axios.get(
+                `https://universalis.app/api/v2/${worldName}/${itemId}?listings=5`
+            ),
+        ]);
+    } else {
+        const [worldResponse] = await Promise.all([
+            axios.get(
+                `https://universalis.app/api/v2/${worldName}/${itemId}?listings=5&hq=true`
+            ),
+        ]);
+    }
     const worldData = worldResponse?.data;
     const worldPrintData = worldData.listings
         .map((listing) => {

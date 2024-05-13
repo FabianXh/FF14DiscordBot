@@ -38,6 +38,13 @@ module.exports = {
                     { name: 'Twintania', value: 'Twintania' },
                     { name: 'Zodiark', value: 'Zodiark' }
                 )
+        )
+        .addBooleanOption((option) =>
+            option
+                .setName('hq')
+                .setDescription(
+                    'wether you want the bot to only return HQ options'
+                )
         ),
     async execute(interaction) {
         await interaction.deferReply();
@@ -58,12 +65,16 @@ module.exports = {
         if (interaction.options.getString('world') != null) {
             const embededMassage = await specificWorld(
                 input,
-                interaction.options.getString('world')
+                interaction.options.getString('world'),
+                interaction.option.getBoolean('hq')
             );
             await interaction.editReply({ embeds: [embededMassage] });
             return;
         }
-        const embededMassage = await performScraping(input);
+        const embededMassage = await performScraping(
+            input,
+            interaction.options.getBoolean('hq')
+        );
         await interaction.editReply({ embeds: [embededMassage] });
     },
 };
