@@ -13,6 +13,13 @@ module.exports = {
                 .setName('name')
                 .setDescription('Input the item name')
                 .setRequired(true)
+        )
+        .addStringOption((option) =>
+            option
+                .setName('world')
+                .setDescription(
+                    'optional world that you specifically want to search'
+                )
         ),
     async execute(interaction) {
         await interaction.deferReply();
@@ -21,6 +28,7 @@ module.exports = {
             console.log('No input provided.');
             return;
         }
+
         input = input
             .split(' ')
             .map((word) =>
@@ -29,6 +37,14 @@ module.exports = {
                     : word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
             )
             .join(' ');
+        if (interaction.options.getString('world') != null) {
+            const embededMassage = await specificWorld(
+                input,
+                interaction.options.getString('world')
+            );
+            await interaction.editReply({ embeds: [embededMassage] });
+            return;
+        }
         const embededMassage = await performScraping(input);
         await interaction.editReply({ embeds: [embededMassage] });
     },

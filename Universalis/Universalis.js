@@ -82,7 +82,7 @@ async function specificWorld(itemName, worldName) {
     const worldPrintData = worldData.listings
         .map((listing) => {
             const hq = listing.hq ? 'HQ' : '';
-            return `**${listing.worldName}**: ${listing.pricePerUnit}<:Gil_Icon:1237123134260379758>x${listing.quantity} ${hq}\n`;
+            return `${listing.pricePerUnit}<:Gil_Icon:1237123134260379758>x${listing.quantity} ${hq}\n`;
         })
         .join('');
     const embeddedMessage = new EmbedBuilder()
