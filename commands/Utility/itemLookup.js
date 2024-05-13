@@ -17,11 +17,16 @@ module.exports = {
     async execute(interaction) {
         await interaction.deferReply();
         let input = interaction.options.getString('name');
+        if (!input) {
+            console.log('No input provided.');
+            return;
+        }
         input = input
             .split(' ')
-            .map(
-                (word) =>
-                    word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
+            .map((word) =>
+                word === 'of'
+                    ? word
+                    : word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
             )
             .join(' ');
         const embededMassage = await performScraping(input);

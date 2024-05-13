@@ -4,19 +4,14 @@ const items = require('./items.json');
 
 // Function to perform scraping
 async function performScraping(itemName) {
-    // Get the item data from the FFXIV API
     console.log(itemName);
-    const itemResponse = await axios.get(
-        `https://xivapi.com/Item?name=${itemName}`
+    const itemId = Object.keys(items).find(
+        (key) => items[key]['en'] === itemName
     );
-    const itemData = itemResponse.data.Results[0];
-    if (!itemData) {
+    if (!itemId) {
         console.log('Item not found.');
         return;
     }
-    const itemId = itemData.ID;
-    console.log(itemData);
-
     // Get the data from Universalis
     const [lightResponse, chaosResponse] = await Promise.all([
         axios.get(`https://universalis.app/api/v2/light/${itemId}?listings=5`),
