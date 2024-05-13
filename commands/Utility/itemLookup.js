@@ -20,6 +20,24 @@ module.exports = {
                 .setDescription(
                     'optional world that you specifically want to search'
                 )
+                .addChoices(
+                    { name: 'Cerberus', value: 'Cerberus' },
+                    { name: 'Louisoix', value: 'Louisoix' },
+                    { name: 'Moogle', value: 'Moogle' },
+                    { name: 'Omega', value: 'Omega' },
+                    { name: 'Phantom', value: 'Phantom' },
+                    { name: 'Ragnarok', value: 'Ragnarok' },
+                    { name: 'Sagittarius', value: 'Sagittarius' },
+                    { name: 'Spriggan', value: 'Spriggan' },
+                    { name: 'Alpha', value: 'Alpha' },
+                    { name: 'Lich', value: 'Lich' },
+                    { name: 'Odin', value: 'Odin' },
+                    { name: 'Phoenix', value: 'Phoenix' },
+                    { name: 'Raiden', value: 'Raiden' },
+                    { name: 'Shiva', value: 'Shiva' },
+                    { name: 'Twintania', value: 'Twintania' },
+                    { name: 'Zodiark', value: 'Zodiark' }
+                )
         ),
     async execute(interaction) {
         await interaction.deferReply();
