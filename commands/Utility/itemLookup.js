@@ -1,9 +1,17 @@
-const { SlashCommandBuilder } = require('@discordjs/builders');
+const {
+    Client,
+    GatewayIntentBits,
+    SlashCommandBuilder,
+} = require('discord.js');
 const {
     performScraping,
     specificWorld,
 } = require('../../Universalis/Universalis');
+const fs = require('fs');
+const path = require('path');
+const { token } = require('../../config.json');
 
+const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('item-lookup')
@@ -13,6 +21,7 @@ module.exports = {
                 .setName('name')
                 .setDescription('Input the item name')
                 .setRequired(true)
+                .setAutocomplete(true)
         )
         .addStringOption((option) =>
             option
@@ -47,6 +56,28 @@ module.exports = {
                 )
         ),
     async execute(interaction) {
+        client.on(Events.InteractionCreate, async (interaction) => {
+            if (!interaction.isAutocomplete()) return;
+            //            const data = fs.readFileSync(
+            //                path.join(__dirname, 'enValues.json'),
+            //                'utf8'
+            //            );
+
+            const focusedValue = interaction.options.getFocused();
+            const choices = [
+                'Grade 8 Tincture of Intelligence',
+                'Grade 8 Tincture of Strength',
+                'Grade 8 Tincture of Vitality',
+                'Grade 8 Tincture of Dexterity',
+                'Grade 8 Tincture of Mind',
+            ];
+            const filtered = choices.filter((choice) =>
+                choice.startsWith(focusedValue)
+            );
+            await interaction.respond(
+                filtered.map((choice) => ({ name: choice, value: choice }))
+            );
+        });
         await interaction.deferReply();
         let input = interaction.options.getString('name');
         if (!input) {
@@ -78,3 +109,4 @@ module.exports = {
         await interaction.editReply({ embeds: [embededMassage] });
     },
 };
+client.login(token);
