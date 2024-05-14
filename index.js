@@ -3,6 +3,8 @@ const { Client, Collection, GatewayIntentBits } = require('discord.js');
 const fs = require('node:fs');
 const path = require('node:path');
 const { token } = require('./config.json');
+const { on } = require('node:events');
+const { ENvalue } = require('./enValues.json');
 
 // Create a new client instance
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
@@ -45,4 +47,22 @@ for (const file of eventFiles) {
         client.on(event.name, (...args) => event.execute(...args));
     }
 }
+
+client.on('interactionCreate', (interaction) => {
+    if (!interaction.isAutocomplete()) return;
+    if (interaction.commandName !== 'item-lookup') return;
+
+    const focusedValue = interaction.options.getFocused();
+
+    const data = fs.readFileSync(path.join(__dirname, 'enValues.json'), 'utf8');
+    const choices = JSON.parse(data);
+    const filtered = choices.filter((choice) =>
+        choice.toLowerCase().startsWith(focusedValue.toLowerCase())
+    );
+    const results = filtered.map((choice) => ({
+        name: choice,
+        value: choice,
+    }));
+    interaction.respond(results.slice(0, 25)).catch(() => {});
+});
 client.login(token);
