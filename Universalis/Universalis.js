@@ -12,9 +12,10 @@ async function performScraping(itemName, HQ = false) {
         console.log('Item not found.');
         return;
     }
+    let lightResponse, chaosResponse;
     // Get the data from Universalis
     if (HQ == false) {
-        const [lightResponse, chaosResponse] = await Promise.all([
+        [lightResponse, chaosResponse] = await Promise.all([
             axios.get(
                 `https://universalis.app/api/v2/light/${itemId}?listings=5`
             ),
@@ -23,7 +24,7 @@ async function performScraping(itemName, HQ = false) {
             ),
         ]);
     } else {
-        const [lightResponse, chaosResponse] = await Promise.all([
+        [lightResponse, chaosResponse] = await Promise.all([
             axios.get(
                 `https://universalis.app/api/v2/light/${itemId}?listings=5&hq=true`
             ),
@@ -88,14 +89,15 @@ async function specificWorld(itemName, worldName, HQ = false) {
         console.log('Item not found.');
         return;
     }
+    let worldResponse;
     if (HQ == false) {
-        const [worldResponse] = await Promise.all([
+        [worldResponse] = await Promise.all([
             axios.get(
                 `https://universalis.app/api/v2/${worldName}/${itemId}?listings=5`
             ),
         ]);
     } else {
-        const [worldResponse] = await Promise.all([
+        [worldResponse] = await Promise.all([
             axios.get(
                 `https://universalis.app/api/v2/${worldName}/${itemId}?listings=5&hq=true`
             ),

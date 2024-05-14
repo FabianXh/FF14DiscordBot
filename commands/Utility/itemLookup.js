@@ -66,7 +66,7 @@ module.exports = {
             const embededMassage = await specificWorld(
                 input,
                 interaction.options.getString('world'),
-                interaction.option.getBoolean('hq')
+                interaction.options.getBoolean('hq')
             );
             await interaction.editReply({ embeds: [embededMassage] });
             return;
