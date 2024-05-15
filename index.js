@@ -3,9 +3,12 @@ const { Client, Collection, GatewayIntentBits } = require('discord.js');
 const fs = require('node:fs');
 const path = require('node:path');
 const { token } = require('./config.json');
-const { on } = require('node:events');
-const { ENvalue } = require('./enValues.json');
-
+const {
+    createEmbedMessage,
+    endOfGame,
+    row,
+    getRoll,
+} = require('./commands/Utility/DR.js');
 // Create a new client instance
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 
@@ -13,7 +16,7 @@ client.commands = new Collection();
 
 const foldersPath = path.join(__dirname, 'commands');
 const commandFolders = fs.readdirSync(foldersPath);
-
+const getRandomInt = (max) => Math.floor(Math.random() * max) + 1;
 for (const folder of commandFolders) {
     const commandsPath = path.join(foldersPath, folder);
     const commandFiles = fs
@@ -49,20 +52,41 @@ for (const file of eventFiles) {
 }
 
 client.on('interactionCreate', (interaction) => {
-    if (!interaction.isAutocomplete()) return;
-    if (interaction.commandName !== 'item-lookup') return;
+    if (
+        interaction.isAutocomplete() ||
+        interaction.commandName == 'item-lookup'
+    ) {
+        const focusedValue = interaction.options.getFocused();
 
-    const focusedValue = interaction.options.getFocused();
-
-    const data = fs.readFileSync(path.join(__dirname, 'enValues.json'), 'utf8');
-    const choices = JSON.parse(data);
-    const filtered = choices.filter((choice) =>
-        choice.toLowerCase().startsWith(focusedValue.toLowerCase())
-    );
-    const results = filtered.map((choice) => ({
-        name: choice,
-        value: choice,
-    }));
-    interaction.respond(results.slice(0, 25)).catch(() => {});
+        const data = fs.readFileSync(
+            path.join(__dirname, 'enValues.json'),
+            'utf8'
+        );
+        const choices = JSON.parse(data);
+        const filtered = choices.filter((choice) =>
+            choice.toLowerCase().startsWith(focusedValue.toLowerCase())
+        );
+        const results = filtered.map((choice) => ({
+            name: choice,
+            value: choice,
+        }));
+        interaction.respond(results.slice(0, 25)).catch(() => {});
+    } else if (interaction.isButton() || interaction.customId == 'rollMore') {
+        let roll = getRoll();
+        console.log(roll);
+        let oldMax = roll; // might need to change this to a global variable
+        roll = getRandomInt(oldMax);
+        if (roll === 1) {
+            interaction.reply({
+                embeds: [endOfGame(interaction.user)],
+                components: [],
+            });
+            return;
+        }
+        interaction.reply({
+            embeds: [createEmbedMessage(oldMax, roll, interaction.user)],
+            components: [row],
+        });
+    }
 });
 client.login(token);

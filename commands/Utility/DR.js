@@ -1,26 +1,22 @@
 const {
-    Client,
-    GatewayIntentBits,
     ButtonStyle,
     SlashCommandBuilder,
     EmbedBuilder,
     ActionRowBuilder,
     ButtonBuilder,
 } = require('discord.js');
-const { token } = require('../../config.json');
 
-const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 const row = new ActionRowBuilder();
 
 const getRandomInt = (max) => Math.floor(Math.random() * max) + 1;
-
+let roll = 0;
+const getRoll = () => roll;
 row.addComponents(
     new ButtonBuilder()
         .setCustomId('rollMore')
         .setLabel('Roll')
         .setStyle(ButtonStyle.Danger)
 );
-
 const createEmbedMessage = (input, roll, target) =>
     new EmbedBuilder()
         .setColor('DC143C')
@@ -55,40 +51,16 @@ module.exports = {
 
     async execute(interaction) {
         await interaction.deferReply();
-        console.log(interaction);
         const input = interaction.options.getInteger('number');
-        let roll = getRandomInt(input);
-
-        await client.on('interactionCreate', (interaction) => {
-            if (
-                !interaction.isButton() ||
-                interaction.customId !== 'rollMore'
-            ) {
-                return;
-            }
-
-            let oldMax = roll;
-            roll = getRandomInt(oldMax);
-
-            if (roll === 1) {
-                interaction.reply({
-                    embeds: [endOfGame(interaction.user)],
-                    components: [],
-                });
-                return;
-            }
-
-            interaction.reply({
-                embeds: [createEmbedMessage(oldMax, roll, interaction.user)],
-                components: [row],
-            });
-        });
+        roll = getRandomInt(input);
 
         await interaction.editReply({
             embeds: [createEmbedMessage(input, roll, interaction.user)],
             components: [row],
         });
     },
+    createEmbedMessage,
+    endOfGame,
+    row,
+    getRoll,
 };
-
-client.login(token);

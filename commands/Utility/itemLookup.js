@@ -9,7 +9,6 @@ const {
 } = require('../../Universalis/Universalis');
 const { token } = require('../../config.json');
 
-const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('item-lookup')
@@ -85,4 +84,3 @@ module.exports = {
         await interaction.editReply({ embeds: [embededMassage] });
     },
 };
-client.login(token);
