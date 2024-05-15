@@ -6,31 +6,18 @@ async function getItemId(itemName) {
     );
     const searchData = response.data;
     const itemId = searchData.Results[0].ID;
-    const itemData = await axios.get(`https://xivapi.com/item/${itemId}`);
-    const links = itemData.data.GameContentLinks;
-    console.log(links);
+    const itemData = await axios.get(
+        `https://www.garlandtools.org/db/doc/item/en/3/${itemId}.json`
+    );
+    const npc = itemData.data.item.tradeShops[0].npcs[0];
+    console.log(npc);
+    const npcData = await axios.get(
+        `https://www.garlandtools.org/db/doc/npc/en/2/${npc}.json`
+    );
 
-    // Iterate over the keys in the GameContentLinks object
-    for (const key in links) {
-        //        console.log(`${key}:`);
-        // Iterate over the keys in the nested object
-        for (const subKey in links[key]) {
-            //            console.log(`  ${subKey}: ${links[key][subKey]}`);
-            if (key === 'Quest') {
-                const questId = links[key][subKey];
-                const questData = await axios.get(
-                    `https://xivapi.com/Quest/${questId}`
-                );
-                console.log(`    Location: ${questData.data.PlaceName}`);
-            }
-            if (key === 'GilShopItem') {
-                const CopioltIsAnIdiot = await axios.get(
-                    'https://xivapi.com/GilShopItem/262177.8'
-                );
-                console.log(CopioltIsAnIdiot.data.GameContentLinks);
-            }
-        }
-    }
+    const zoneId = npcData.data.npc.zoneid;
+    const zone = await axios.get(`https://xivapi.com/PlaceName/${zoneId}`);
+    console.log(zone.data.Name);
 }
 
-getItemId('tsai tou vounou'); // i think this won't work might need to look into lumina but that looks we will have the parse the data through a c script... might be fun
+getItemId('Gae Bolg Ultima');
