@@ -9,15 +9,34 @@ async function getItemId(itemName) {
     const itemData = await axios.get(
         `https://www.garlandtools.org/db/doc/item/en/3/${itemId}.json`
     );
-    const npc = itemData.data.item.tradeShops[0].npcs[0];
-    console.log(npc);
-    const npcData = await axios.get(
-        `https://www.garlandtools.org/db/doc/npc/en/2/${npc}.json`
-    );
+    console.log(itemData.data);
+    // if there is an NPC associated with the item, get the zone of that NPC
+    let ingredients = [];
+    if (itemData.data.item.tradeShops !== undefined) {
+        const npc = itemData.data.item.tradeShops[0].npcs[0];
+        const npcData = await axios.get(
+            `https://www.garlandtools.org/db/doc/npc/en/2/${npc}.json`
+        );
 
-    const zoneId = npcData.data.npc.zoneid;
-    const zone = await axios.get(`https://xivapi.com/PlaceName/${zoneId}`);
-    console.log(zone.data.Name);
+        const zoneId = npcData.data.npc.zoneid;
+
+        const zone = await axios.get(`https://xivapi.com/PlaceName/${zoneId}`);
+        console.log(zone.data.Name);
+        return zone.data.Name;
+    }
+    // if there are ingredients associated with the item, get the names of the ingredients
+    if (itemData.data.ingredients !== undefined) {
+        for (const ingredient of itemData.data.ingredients) {
+            console.log(ingredient.name);
+            ingredients.push(ingredient.name);
+        }
+        console.log(ingredients);
+    }
+    // if the item is tradeable, get the item ID return univeraslis link
+    if ((itemData.data.item.tradeable = 1)) {
+        const Id = itemData.data.item.id;
+        console.log(`https://universalis.app/market/${Id}`);
+    }
 }
 
-getItemId('Gae Bolg Ultima');
+getItemId('Grade 8 Tincture of Strength');
