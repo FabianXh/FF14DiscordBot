@@ -11,6 +11,9 @@ const row = new ActionRowBuilder();
 const getRandomInt = (max) => Math.floor(Math.random() * max) + 1;
 let roll = 0;
 const getRoll = () => roll;
+const returnRoll = (R) => {
+    roll = R;
+};
 row.addComponents(
     new ButtonBuilder()
         .setCustomId('rollMore')
@@ -63,4 +66,5 @@ module.exports = {
     endOfGame,
     row,
     getRoll,
+    returnRoll,
 };

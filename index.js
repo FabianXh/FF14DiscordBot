@@ -8,6 +8,7 @@ const {
     endOfGame,
     row,
     getRoll,
+    returnRoll,
 } = require('./commands/Utility/DR.js');
 // Create a new client instance
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
@@ -87,6 +88,7 @@ client.on('interactionCreate', (interaction) => {
             embeds: [createEmbedMessage(oldMax, roll, interaction.user)],
             components: [row],
         });
+        returnRoll(roll);
     }
 });
 client.login(token);
