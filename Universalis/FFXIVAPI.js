@@ -33,8 +33,21 @@ async function getItemId(itemName) {
         const zoneId = npcData.data.npc.zoneid;
 
         const zone = await axios.get(`https://xivapi.com/PlaceName/${zoneId}`);
-        console.log(zone.data.Name);
-        embeddedMessage.addField({ name: 'Zone', value: zone.data.Name });
+        console.log(
+            zone.data.Name +
+                '\n' +
+                npcData.data.npc.name +
+                '\n' +
+                npcData.data.npc.coords
+        );
+        embeddedMessage.addFields({
+            name: 'Zone',
+            value: `zone: ${zone.data.Name} +
+                \n +
+                name: ${npcData.data.npc.name} +
+                '\n' +
+                Coords: ${npcData.data.npc.coords}`,
+        });
     }
     // if there are ingredients associated with the item, get the names of the ingredients
     if (itemData.data.ingredients !== undefined) {
@@ -64,4 +77,4 @@ async function getItemId(itemName) {
     return embeddedMessage;
 }
 
-getItemId('Grade 8 Tincture of Strength');
+getItemId('Curtana Ultima');
