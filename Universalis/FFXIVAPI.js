@@ -33,19 +33,27 @@ async function getItemId(itemName) {
         const zoneId = npcData.data.npc.zoneid;
 
         const zone = await axios.get(`https://xivapi.com/PlaceName/${zoneId}`);
-        console.log(
-            zone.data.Name +
-                '\n' +
-                npcData.data.npc.name +
-                '\n' +
-                npcData.data.npc.coords
-        );
+        let CurrID = null;
+        let amount = 0;
+        for (const shop of npcData.data.npc.shops) {
+            for (const entry of shop.entries) {
+                if (entry.item[0].id == itemId) {
+                    console.log(shop.name);
+                    CurrID = entry.currency[0].id;
+                    amount = entry.currency[0].amount;
+                }
+            }
+        }
+        if (CurrID !== null) {
+            const currency = await axios.get(
+                `https://xivapi.com/Item/${CurrID}`
+            );
+            console.log(currency.data.Name, amount);
+        }
         embeddedMessage.addFields({
             name: 'Zone',
-            value: `zone: ${zone.data.Name} +
-                \n +
-                name: ${npcData.data.npc.name} +
-                '\n' +
+            value: `zone: ${zone.data.Name} 
+                name: ${npcData.data.npc.name} 
                 Coords: ${npcData.data.npc.coords}`,
         });
     }
@@ -76,4 +84,5 @@ async function getItemId(itemName) {
 
     return embeddedMessage;
 }
+getItemId('Gae Bolg Ultima');
 exports.getItemId = getItemId;
