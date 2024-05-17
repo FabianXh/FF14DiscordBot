@@ -15,7 +15,7 @@ async function getItemId(itemName) {
     // if there is an NPC associated with the item, get the zone of that NPC
     let ingredients = [];
     let embeddedMessage = new EmbedBuilder()
-        .setTitle(itemName + 'data')
+        .setTitle(itemName + ' data')
         .setDescription('Data for ' + itemName)
         .setColor('89CFF0')
         .setFooter({
@@ -76,5 +76,4 @@ async function getItemId(itemName) {
 
     return embeddedMessage;
 }
-
-getItemId('Curtana Ultima');
+exports.getItemId = getItemId;
