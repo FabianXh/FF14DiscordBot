@@ -23,7 +23,9 @@ async function getItemId(itemName) {
             iconURL:
                 'https://cdn.discordapp.com/attachments/1236243830886371330/1237138036777553940/204558a44722029ecc0dec40ec79c74e.jpeg?ex=663a8e14&is=66393c94&hm=09b0b70257cadc297a94980c98cd22e620f54a086a6f7b8584913e04895c68ae&',
         });
-
+    let CurrID = null;
+    let amount = 0;
+    let currency = null;
     if (itemData.data.item.tradeShops !== undefined) {
         const npc = itemData.data.item.tradeShops[0].npcs[0];
         const npcData = await axios.get(
@@ -33,9 +35,7 @@ async function getItemId(itemName) {
         const zoneId = npcData.data.npc.zoneid;
 
         const zone = await axios.get(`https://xivapi.com/PlaceName/${zoneId}`);
-        let CurrID = null;
-        let amount = 0;
-        let currency = null;
+
         for (const shop of npcData.data.npc.shops) {
             for (const entry of shop.entries) {
                 if (entry.item[0].id == itemId) {
@@ -75,6 +75,20 @@ async function getItemId(itemName) {
             name: 'Universalis Link',
             value: `https://universalis.app/market/${Id}`,
         });
+    }
+    if (CurrID !== null) {
+        const CurrData = await axios.get(
+            `https://www.garlandtools.org/db/doc/item/en/3/${CurrID}.json`
+        );
+        if (CurrData.data.item.instances[0] !== undefined) {
+            const instanceData = await axios.get(
+                `https://xivapi.com/InstanceContent/${CurrData.data.item.instances[0]}`
+            );
+            embeddedMessage.addFields({
+                name: 'Instance Content',
+                value: instanceData.data.Name,
+            });
+        }
     }
 
     // add fields to the embedded message based on the data
