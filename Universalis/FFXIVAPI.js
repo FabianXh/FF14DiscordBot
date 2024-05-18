@@ -35,6 +35,7 @@ async function getItemId(itemName) {
         const zone = await axios.get(`https://xivapi.com/PlaceName/${zoneId}`);
         let CurrID = null;
         let amount = 0;
+        let currency = null;
         for (const shop of npcData.data.npc.shops) {
             for (const entry of shop.entries) {
                 if (entry.item[0].id == itemId) {
@@ -45,16 +46,14 @@ async function getItemId(itemName) {
             }
         }
         if (CurrID !== null) {
-            const currency = await axios.get(
-                `https://xivapi.com/Item/${CurrID}`
-            );
-            console.log(currency.data.Name, amount);
+            currency = await axios.get(`https://xivapi.com/Item/${CurrID}`);
         }
         embeddedMessage.addFields({
-            name: 'Zone',
-            value: `zone: ${zone.data.Name} 
-                name: ${npcData.data.npc.name} 
-                Coords: ${npcData.data.npc.coords}`,
+            name: 'Seller',
+            value: `Zone: ${zone.data.Name} 
+                Name: ${npcData.data.npc.name} 
+                Coords: ${npcData.data.npc.coords[0]}x ${npcData.data.npc.coords[1]}y
+                Currency: ${amount}x ${currency.data.Name}`,
         });
     }
     // if there are ingredients associated with the item, get the names of the ingredients
@@ -63,7 +62,6 @@ async function getItemId(itemName) {
             ingredients.push(ingredient.name);
         }
         let ingredientsPrintData = ingredients.join(', \n');
-        console.log(ingredientsPrintData);
         embeddedMessage.addFields({
             name: 'Ingredients',
             value: ingredientsPrintData,
@@ -72,7 +70,6 @@ async function getItemId(itemName) {
     // if the item is tradeable, get the item ID return univeraslis link
     if (itemData.data.item.tradeable == 1) {
         const Id = itemData.data.item.id;
-        console.log(`https://universalis.app/market/${Id}`);
         embeddedMessage.setURL(`https://universalis.app/market/${Id}`);
         embeddedMessage.addFields({
             name: 'Universalis Link',
@@ -86,3 +83,6 @@ async function getItemId(itemName) {
 }
 getItemId('Gae Bolg Ultima');
 exports.getItemId = getItemId;
+
+// https://xivapi.com/InstanceContent/30067 - get instance content
+// itemData.data.item.partials[]
