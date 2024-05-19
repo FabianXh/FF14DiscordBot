@@ -12,6 +12,7 @@ async function getItemId(itemName) {
     const itemData = await axios.get(
         `https://www.garlandtools.org/db/doc/item/en/3/${itemId}.json`
     );
+    const itemPNG = `https://www.garlandtools.org/files/icons/item/${itemId}.png`;
     // if there is an NPC associated with the item, get the zone of that NPC
     let ingredients = [];
     let embeddedMessage = new EmbedBuilder()
@@ -90,12 +91,20 @@ async function getItemId(itemName) {
             });
         }
     }
+    if (itemData.data.item.instances[0] !== undefined) {
+        const IinstanceData = await axios.get(
+            `https://xivapi.com/InstanceContent/${itemData.data.item.instances[0]}`
+        );
+        embeddedMessage.addFields({
+            name: 'Instance Content',
+            value: IinstanceData.data.Name,
+        });
+    }
 
     // add fields to the embedded message based on the data
 
     return embeddedMessage;
 }
-getItemId('Gae Bolg Ultima');
 exports.getItemId = getItemId;
 
 // https://xivapi.com/InstanceContent/30067 - get instance content
