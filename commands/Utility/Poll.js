@@ -36,75 +36,25 @@ module.exports = {
         });
         startTime = (startTime + 2) % 24;
         endTime = (startTime + 2) % 24;
-        await interaction.followUp({
-            poll: {
-                question: {
-                    text: `Saturday ${startTime}:00-${endTime}:00 ST`,
+        for (let i = 0; i < 4; i++) {
+            await interaction.followUp({
+                poll: {
+                    question: {
+                        text: `Saturday ${startTime}:00-${endTime}:00 ST`,
+                    },
+                    answers: [
+                        { text: 'p9s' },
+                        { text: 'p10s' },
+                        { text: 'p11s' },
+                        { text: 'p12s p1' },
+                        { text: 'p12s p2' },
+                    ],
+                    duration: 1,
+                    allowMultiselect: true,
                 },
-                answers: [
-                    { text: 'p9s' },
-                    { text: 'p10s' },
-                    { text: 'p11s' },
-                    { text: 'p12s p1' },
-                    { text: 'p12s p2' },
-                ],
-                duration: 1,
-                allowMultiselect: true,
-            },
-        });
-        startTime = (startTime + 2) % 24;
-        endTime = (startTime + 2) % 24;
-        await interaction.followUp({
-            poll: {
-                question: {
-                    text: `Saturday ${startTime}:00-${endTime}:00 ST`,
-                },
-                answers: [
-                    { text: 'p9s' },
-                    { text: 'p10s' },
-                    { text: 'p11s' },
-                    { text: 'p12s p1' },
-                    { text: 'p12s p2' },
-                ],
-                duration: 1,
-                allowMultiselect: true,
-            },
-        });
-        startTime = (startTime + 2) % 24;
-        endTime = (startTime + 2) % 24;
-        await interaction.followUp({
-            poll: {
-                question: {
-                    text: `Saturday ${startTime}:00-${endTime}:00 ST`,
-                },
-                answers: [
-                    { text: 'p9s' },
-                    { text: 'p10s' },
-                    { text: 'p11s' },
-                    { text: 'p12s p1' },
-                    { text: 'p12s p2' },
-                ],
-                duration: 1,
-                allowMultiselect: true,
-            },
-        });
-        startTime = (startTime + 2) % 24;
-        endTime = (startTime + 2) % 24;
-        await interaction.followUp({
-            poll: {
-                question: {
-                    text: `Saturday ${startTime}:00-${endTime}:00 ST`,
-                },
-                answers: [
-                    { text: 'p9s' },
-                    { text: 'p10s' },
-                    { text: 'p11s' },
-                    { text: 'p12s p1' },
-                    { text: 'p12s p2' },
-                ],
-                duration: 1,
-                allowMultiselect: true,
-            },
-        });
+            });
+            startTime = (startTime + 2) % 24;
+            endTime = (startTime + 2) % 24;
+        }
     },
 };
