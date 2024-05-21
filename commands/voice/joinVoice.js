@@ -1,6 +1,7 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
-const { joinVoiceChannel } = require("@discordjs/voice");
+const { joinVoiceChannel, VoiceConnectionStatus } = require("@discordjs/voice");
 const { ChannelType } = require("discord.js");
+const state = require("../../state");
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -14,13 +15,27 @@ module.exports = {
         .addChannelTypes(ChannelType.GuildVoice)
     ),
   async execute(interaction) {
-    if (interaction.commandName === "joinvc") {
-      const connect = joinVoiceChannel({
-        channelId: interaction.options.getChannel("channel").id,
-        guildId: interaction.guildId,
-        adapterCreator: interaction.guild.voiceAdapterCreator,
-      });
-    }
-    await interaction.reply("Wenz Pull! <se.6> (its working)");
+    const channel = interaction.options.getChannel("channel");
+
+    const connection = joinVoiceChannel({
+      channelId: channel.id,
+      guildId: interaction.guildId,
+      adapterCreator: interaction.guild.voiceAdapterCreator,
+    });
+
+    connection.on(VoiceConnectionStatus.Ready, () => {
+      console.log(
+        "The connection has entered the Ready state - ready to play audio!"
+      );
+    });
+
+    connection.on(VoiceConnectionStatus.Disconnected, () => {
+      console.log("Disconnected from the voice channel.");
+      state.setCurrentVoiceConnection(null);
+    });
+
+    state.setCurrentVoiceConnection(connection);
+
+    await interaction.reply(`Joined voice channel: ${channel.name}`);
   },
 };
