@@ -43,7 +43,7 @@ module.exports = {
                 { text: 'p12s p1' },
                 { text: 'p12s p2' },
             ],
-            duration: 1,
+            duration: duration,
             allowMultiselect: true,
         };
         await interaction.reply({
