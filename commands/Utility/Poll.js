@@ -52,13 +52,13 @@ module.exports = {
         startTime = (startTime + 2) % 24;
         endTime = (startTime + 2) % 24;
         for (let i = 0; i < interaction.options.getInteger('amount') - 1; i++) {
+            poll.question.text = `Saturday ${startTime}:00-${endTime}:00 ST`;
             await interaction.followUp({
                 poll,
             });
 
             startTime = (startTime + 2) % 24;
             endTime = (startTime + 2) % 24;
-            poll.question.text = `Saturday ${startTime}:00-${endTime}:00 ST`;
         }
     },
 };
