@@ -106,6 +106,3 @@ async function getItemId(itemName) {
     return embeddedMessage;
 }
 exports.getItemId = getItemId;
-
-// https://xivapi.com/InstanceContent/30067 - get instance content
-// itemData.data.item.partials[]
