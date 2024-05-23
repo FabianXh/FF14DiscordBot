@@ -88,7 +88,6 @@ client.on('interactionCreate', (interaction) => {
         const filtered = choices.filter((choice) =>
             choice.name.toLowerCase().startsWith(focusedValue.toLowerCase())
         );
-        console.log(filtered);
         const results = filtered.map((choice) => ({
             name: choice.name,
             value: choice.answers, // Convert array to string
