@@ -1,5 +1,7 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const { getMessages, ReturnMessages } = require('../../index');
+const { ReturnMessages } = require('../../index');
+
+let messages = [];
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -43,7 +45,7 @@ module.exports = {
         answers = answer.split(',');
         const poll = {
             question: {
-                text: `Saturday ${startTime}:00-${endTime}:00 ST`,
+                text: `Saturday ${startTime}:00-${endTime}:00 ST ${answers[5]}`,
             },
             answers: [
                 { text: answers[0] },
