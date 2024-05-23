@@ -12,6 +12,13 @@ module.exports = {
                 )
                 .setRequired(true)
         )
+        .addStringOption((option) =>
+            option
+                .setName('raids')
+                .setDescription('raids to poll')
+                .setRequired(true)
+                .setAutocomplete(true)
+        )
         .addIntegerOption((option) =>
             option
                 .setName('amount')

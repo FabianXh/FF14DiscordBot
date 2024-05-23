@@ -10,6 +10,7 @@ const {
     getRoll,
     returnRoll,
 } = require('./commands/Utility/DR.js');
+const { Raids } = require('./Raids.json');
 // Create a new client instance
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 
@@ -54,8 +55,9 @@ for (const file of eventFiles) {
 
 client.on('interactionCreate', (interaction) => {
     if (
-        interaction.isAutocomplete() ||
-        interaction.commandName == 'item-lookup'
+        interaction.isAutocomplete() &&
+        (interaction.commandName == 'item-lookup' ||
+            interaction.commandName == 'item-data')
     ) {
         const focusedValue = interaction.options.getFocused();
 
@@ -70,6 +72,23 @@ client.on('interactionCreate', (interaction) => {
         const results = filtered.map((choice) => ({
             name: choice,
             value: choice,
+        }));
+        interaction.respond(results.slice(0, 25)).catch(() => {});
+    } else if (
+        interaction.isAutocomplete() &&
+        interaction.commandName == 'poll'
+    ) {
+        const focusedValue = interaction.options.getFocused();
+        let choices = [];
+        for (const raid in Raids) {
+            choices.push(raid);
+        }
+        const filtered = choices.filter((choice) =>
+            choice.toLowerCase().startsWith(focusedValue.toLowerCase())
+        );
+        const results = filtered.map((choice) => ({
+            name: choice,
+            value: choice.answers,
         }));
         interaction.respond(results.slice(0, 25)).catch(() => {});
     } else if (interaction.isButton() || interaction.customId == 'rollMore') {
