@@ -11,6 +11,7 @@ const {
     returnRoll,
 } = require('./commands/Utility/DR.js');
 const { Raids } = require('./Raids.json');
+const { get } = require('node:http');
 // Create a new client instance
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 
@@ -52,6 +53,12 @@ for (const file of eventFiles) {
         client.on(event.name, (...args) => event.execute(...args));
     }
 }
+
+let messages = [];
+const getMessages = () => messages;
+const returnMessages = (M) => {
+    messages = M;
+};
 
 client.on('interactionCreate', (interaction) => {
     if (
@@ -112,4 +119,6 @@ client.on('interactionCreate', (interaction) => {
         returnRoll(roll);
     }
 });
+module.exports = getMessages;
+module.exports = returnMessages;
 client.login(token);

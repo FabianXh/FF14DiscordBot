@@ -1,4 +1,5 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
+const { getMessages, ReturnMessages } = require('../../index');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -55,19 +56,22 @@ module.exports = {
             allowMultiselect: true,
         };
 
-        await interaction.reply({
+        let massage = await interaction.reply({
             poll,
         });
+        messages.push(massage);
         startTime = (startTime + 2) % 24;
         endTime = (startTime + 2) % 24;
         for (let i = 0; i < interaction.options.getInteger('amount') - 1; i++) {
             poll.question.text = `Saturday ${startTime}:00-${endTime}:00 ST`;
-            await interaction.followUp({
+            message = await interaction.followUp({
                 poll,
             });
-
+            messages.push(message);
             startTime = (startTime + 2) % 24;
             endTime = (startTime + 2) % 24;
         }
+        console.log(messages);
+        ReturnMessages(messages);
     },
 };
