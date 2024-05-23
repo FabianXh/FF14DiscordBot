@@ -1,31 +1,13 @@
 {
     "Raids": {
         "Pandæmonium: Asphodelos": {
-            "answers": [
-                { "text": "p1s" },
-                { "text": "p2s" },
-                { "text": "p3s" },
-                { "text": "p4s p1" },
-                { "text": "p4s p2" }
-            ]
+            "answers": "p1s, p2s, p3s, p4s p1, p4s p2"
         },
         "Pandæmonium: Abyssos": {
-            "answers": [
-                { "text": "p5s" },
-                { "text": "p6s" },
-                { "text": "p7s" },
-                { "text": "p8s p1" },
-                { "text": "p8s p2" }
-            ]
+            "answers": "p5s, p6s, p7s, p8s p1, p8s p2"
         },
         "Pandæmonium: Anabaseios": {
-            "answers": [
-                { "text": "p9s" },
-                { "text": "p10s" },
-                { "text": "p11s" },
-                { "text": "p12s p1" },
-                { "text": "p12s p2" }
-            ]
+            "answers": "p9s, p10s, p11s, p12s p1, p12s p2"
         }
     }
 }

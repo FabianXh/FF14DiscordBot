@@ -79,16 +79,19 @@ client.on('interactionCreate', (interaction) => {
         interaction.commandName == 'poll'
     ) {
         const focusedValue = interaction.options.getFocused();
-        let choices = [];
-        for (const raid in Raids) {
-            choices.push(raid);
-        }
+        const data = JSON.parse(fs.readFileSync('Raids.json', 'utf8'));
+        const raids = data.Raids;
+        const choices = Object.keys(raids).map((raid) => ({
+            name: raid,
+            answers: raids[raid].answers,
+        }));
         const filtered = choices.filter((choice) =>
-            choice.toLowerCase().startsWith(focusedValue.toLowerCase())
+            choice.name.toLowerCase().startsWith(focusedValue.toLowerCase())
         );
+        console.log(filtered);
         const results = filtered.map((choice) => ({
-            name: choice,
-            value: choice.answers,
+            name: choice.name,
+            value: choice.answers, // Convert array to string
         }));
         interaction.respond(results.slice(0, 25)).catch(() => {});
     } else if (interaction.isButton() || interaction.customId == 'rollMore') {

@@ -38,21 +38,23 @@ module.exports = {
         let duration = interaction.options.getInteger('duration');
         startTime = parseInt(startTime.split(':')[0], 10);
         let endTime = startTime + 2;
-        console.log(startTime);
+        const answer = interaction.options.getString('raids');
+        answers = answer.split(',');
         const poll = {
             question: {
                 text: `Saturday ${startTime}:00-${endTime}:00 ST`,
             },
             answers: [
-                { text: 'p9s' },
-                { text: 'p10s' },
-                { text: 'p11s' },
-                { text: 'p12s p1' },
-                { text: 'p12s p2' },
+                { text: answers[0] },
+                { text: answers[1] },
+                { text: answers[2] },
+                { text: answers[3] },
+                { text: answers[4] },
             ],
             duration: duration,
             allowMultiselect: true,
         };
+
         await interaction.reply({
             poll,
         });
