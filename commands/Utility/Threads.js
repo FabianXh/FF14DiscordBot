@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-
+const { getMessages, returnMessages } = require('./Poll.js');
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('threads')
@@ -7,6 +7,6 @@ module.exports = {
             'create a thread for each raid that got a cirtain number of votes'
         ),
     async execute(interaction) {
-        await interaction.reply('');
+        const messages = getMessages();
     },
 };
