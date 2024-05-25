@@ -10,8 +10,7 @@ const {
     getRoll,
     returnRoll,
 } = require('./commands/Utility/DR.js');
-const { Raids } = require('./Raids.json');
-const { get } = require('node:http');
+const { getMessages, returnMessages } = require('./commands/Utility/Poll.js');
 // Create a new client instance
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 
@@ -55,10 +54,6 @@ for (const file of eventFiles) {
 }
 
 let messages = [];
-const getMessages = () => messages;
-const returnMessages = (M) => {
-    messages = M;
-};
 
 client.on('interactionCreate', (interaction) => {
     if (
@@ -119,6 +114,4 @@ client.on('interactionCreate', (interaction) => {
         returnRoll(roll);
     }
 });
-module.exports = getMessages;
-module.exports = returnMessages;
 client.login(token);

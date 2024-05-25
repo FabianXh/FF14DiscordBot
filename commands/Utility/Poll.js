@@ -1,8 +1,10 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const { ReturnMessages } = require('../../index');
 
 let messages = [];
-
+const getMessages = () => messages;
+const returnMessages = (M) => {
+    messages = M;
+};
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('poll')
@@ -74,6 +76,7 @@ module.exports = {
             endTime = (startTime + 2) % 24;
         }
         console.log(messages);
-        ReturnMessages(messages);
     },
+    getMessages,
+    returnMessages,
 };
