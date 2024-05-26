@@ -75,7 +75,6 @@ module.exports = {
             startTime = (startTime + 2) % 24;
             endTime = (startTime + 2) % 24;
         }
-        console.log(messages);
     },
     getMessages,
     returnMessages,

@@ -8,5 +8,7 @@ module.exports = {
         ),
     async execute(interaction) {
         const messages = getMessages();
+        console.log(messages);
+        console.log(messages.Message);
     },
 };
