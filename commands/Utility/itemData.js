@@ -1,5 +1,5 @@
-const { SlashCommandBuilder } = require('discord.js');
-const { getItemId } = require('../../Universalis/FFXIVAPI');
+const SlashCommandBuilder = require('discord.js');
+const getItemId = require('../../Universalis/FFXIVAPI');
 
 module.exports = {
     data: new SlashCommandBuilder()

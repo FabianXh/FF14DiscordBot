@@ -1,5 +1,5 @@
 const axios = require('axios');
-const { EmbedBuilder } = require('discord.js');
+const EmbedBuilder = require('discord.js');
 
 async function getItemId(itemName) {
     const response = await axios.get(

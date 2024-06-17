@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require('@discordjs/builders');
+const SlashCommandBuilder = require('@discordjs/builders');
 const { getMessages, returnMessages } = require('./Poll.js');
 module.exports = {
     data: new SlashCommandBuilder()
